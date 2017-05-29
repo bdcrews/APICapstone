@@ -1,26 +1,39 @@
-var YOUTUBE_SEARCH_URL = 'https://tastedive.com/api/similar';
+//'use strict';
+
+var TASTEDIVE_URL = 'https://tastedive.com/api/similar?callback=?';
 
 
 var RESULT_HTML_TEMPLATE = (
   '<div>' +
-    '<a class="js-image-link" href=""><img class="js-image" src=""></a>' +
+    '<h3 class="js-result-name"></h3>' +
+    '<a class="js-result-teaser"></a>' +
   '</div>'
 );
+
+var RESULTS_IDENTIFIER = '.js-results';
+var RESULTS_START_IDENTIFIER = '.js-results-start';
+var RESULTS_NAME_IDENTIFIER = '.js-result-name';
+var RESULTS_TEASER_IDENTIFIER = '.js-result-teaser';
+var SEARCH_FORM_IDENTIFIER = '.js-search-form';
 
 function getDataFromApi(searchTerm, callback) {
   var query = {
     q: searchTerm,
     //type:,
-    //info: 1,
-    //limit: 5,
+    info: 1,
+    limit: 5,
     k: '271092-BrandonC-L99WRBFW',
-    callback: callback,
+    //callback: callback,
   };
-  $.getJSON(YOUTUBE_SEARCH_URL, query, callback);
+  console.log(query);
+  $.getJSON(TASTEDIVE_URL, query, callback);
 }
 
 function renderResult(result) {
   var template = $(RESULT_HTML_TEMPLATE);
+  template.find(RESULTS_NAME_IDENTIFIER).text(result.Name);
+  template.find(RESULTS_TEASER_IDENTIFIER).text(result.wTeaser);
+  console.log(template);
   /*
   template.find(".js-image").attr("src", result.snippet.thumbnails.medium.url);
   template.find(".js-image-link").attr("href", 
@@ -32,15 +45,23 @@ function renderResult(result) {
 
 function displayTasteDiveAPI(data) {
   console.log(data);
-  /*var results = data.items.map(function(item, index) {
+  var results;
+  results = data.Similar.Info.map(function(item, index) {
     return renderResult(item);
   });
-  $('.js-search-results').html(results);*/
+  $(RESULTS_START_IDENTIFIER).html(results);
+
+  results = data.Similar.Results.map(function(item, index) {
+    return renderResult(item);
+  });
+  console.log(results);
+  $(RESULTS_IDENTIFIER).html(results);
+
   return(data);
 }
 
 function watchSubmit() {
-  $('.js-search-form').submit(function(event) {
+  $(SEARCH_FORM_IDENTIFIER).submit(function(event) {
     event.preventDefault();
     var queryTarget = $(event.currentTarget).find('.js-query');
     var query = queryTarget.val();
