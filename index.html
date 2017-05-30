@@ -1,29 +1,41 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width">
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width'>
         <title>Sugestions Finder</title>
         <script
-          src="https://code.jquery.com/jquery-3.2.1.min.js"
-          integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-          crossorigin="anonymous"></script>
-        <link href="index.css" rel="stylesheet" type="text/css" />
+          src='https://code.jquery.com/jquery-3.2.1.min.js'
+          integrity='sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4='
+          crossorigin='anonymous'></script>
+        <link href='index.css' rel='stylesheet' type='text/css' />
     </head>
     <body>
       <main>
         <h1>Sugestions Finder:</h1>
-          <form action="#" class="js-search-form">
-          	<p></p>
-            <label for="query">Music, Movie, Show, or Book:</label>
-            <input type="text" class="js-query">
-            <button type="submit">Find Suggestions</button>
+          <form action="#'" class='js-search-form'>
+            <label for='query'>Music, Movie, Show, or Book:</label>
+            <input type='text' class='js-query' value='Matrix'>
+            <button type='submit'>Find Suggestions</button>
+            <button type='button' class='js_filter_button'>filter</button>
+
+             <div class='js-filter-list js-hidden'>
+               <input type='radio' name='filter' value='music'> music<br>
+               <input type='radio' name='filter' value='movies'> movie<br>
+               <input type='radio' name='filter' value='shows'> show<br>
+               <input type='radio' name='filter' value='books'> book<br>
+               <input type='radio' name='filter' value='authors'> author<br>
+               <input type='radio' name='filter' value='games'> game<br>
+               <input type='radio' name='filter' id='radio-default' value='any'> any
+             </div>
           </form>
           
           <h2>Results</h2>
-          <div class="js-results-start"></div>
-          <div class="js-results"></div>
+          <section class='js-results'>
+            <div class='js-results-start'></div>
+            <div class='js-results-list'></div>
+          </section>
       </main>
-      <script src="index.js"></script>
+      <script src='index.js'></script>
     </body>
 </html>

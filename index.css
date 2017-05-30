@@ -5,3 +5,16 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
+
+.js-result-container {
+	border: 1px solid black;
+}
+
+.js-minimize {
+	height: 100px;
+	overflow: hidden;
+}
+
+.js-hidden {
+	display: none;
+}

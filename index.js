@@ -1,25 +1,49 @@
-//'use strict';
+'use strict';
 
 var TASTEDIVE_URL = 'https://tastedive.com/api/similar?callback=?';
 
-
-var RESULT_HTML_TEMPLATE = (
-  '<div>' +
-    '<h3 class="js-result-name"></h3>' +
-    '<a class="js-result-teaser"></a>' +
-  '</div>'
-);
-
 var RESULTS_IDENTIFIER = '.js-results';
+var RESULTS_LIST_IDENTIFIER = '.js-results-list';
 var RESULTS_START_IDENTIFIER = '.js-results-start';
 var RESULTS_NAME_IDENTIFIER = '.js-result-name';
 var RESULTS_TEASER_IDENTIFIER = '.js-result-teaser';
+var RESULTS_TYPE_IDENTIFIER = '.js-result-type';
+var RESULTS_WIKI_URL_IDENTIFIER = '.js-result-wiki-url';
+var RESULTS_YOUTUBE_ID_IDENTIFIER = '.js-result-youtube-id';
+var RESULTS_YOUTUBE_URL_IDENTIFIER = '.js-result-youtube-url';
 var SEARCH_FORM_IDENTIFIER = '.js-search-form';
+var RESULT_CONTAINER_IDENTIFIER = '.js-result-container';
+var MINIMIZE_IDENTIFIER = 'js-minimize';
+var FILTER_BUTTON_IDENTIFIER = '.js_filter_button';
+var HIDDEN_IDENTIFIER = 'js-hidden';
+var FILTER_LIST_IDENTIFIER = '.js-filter-list';
 
-function getDataFromApi(searchTerm, callback) {
+var IMAGES_LOCATION = 'Images/';
+var IMAGE_MUSIC = IMAGES_LOCATION + 'music-player.png';
+var IMAGE_MOVIE = IMAGES_LOCATION + 'movie.png';
+var IMAGE_SHOW = IMAGES_LOCATION + 'television.png';
+var IMAGE_BOOK = IMAGES_LOCATION + 'open-book.png';
+var IMAGE_AUTHOR = IMAGES_LOCATION + 'author-sign.png';
+var IMAGE_GAME = IMAGES_LOCATION + 'gamepad.png';
+var IMAGE_UNKNOWN = IMAGES_LOCATION + 'unknown.png';
+
+var RADIO_DEFAULT = 'radio-default';
+
+var RESULT_HTML_TEMPLATE = (
+  '<div class="js-result-container js-minimize">' +
+    '<h3 class="js-result-name"></h3>' +
+    '<img class="js-result-type">' +
+    '<p class="js-result-teaser"></p>' +
+    '<p class="js-result-wiki-url"></p>' +
+    '<p class="js-result-youtube-id"></p>' +
+    '<p class="js-result-youtube-url"></p>' +
+  '</div>'
+);
+
+function getDataFromApi(searchTerm, callback, filterValue) {
   var query = {
     q: searchTerm,
-    //type:,
+    type: filterValue,
     info: 1,
     limit: 5,
     k: '271092-BrandonC-L99WRBFW',
@@ -33,30 +57,35 @@ function renderResult(result) {
   var template = $(RESULT_HTML_TEMPLATE);
   template.find(RESULTS_NAME_IDENTIFIER).text(result.Name);
   template.find(RESULTS_TEASER_IDENTIFIER).text(result.wTeaser);
-  console.log(template);
-  /*
-  template.find(".js-image").attr("src", result.snippet.thumbnails.medium.url);
-  template.find(".js-image-link").attr("href", 
-  'https://www.youtube.com/watch?v=' + result.id.videoId)
-  console.log(result.name);
-  */
+  template.find(RESULTS_TYPE_IDENTIFIER).text(result.Type);
+  template.find(RESULTS_WIKI_URL_IDENTIFIER).text(result.wUrl);
+  template.find(RESULTS_YOUTUBE_ID_IDENTIFIER).text(result.yID);
+  template.find(RESULTS_YOUTUBE_URL_IDENTIFIER).text(result.yUrl);
+
+  var imageSrc;
+  switch(result.Type){
+    case 'music': imageSrc = IMAGE_MUSIC; break;
+    case 'movie': imageSrc = IMAGE_MOVIE; break;
+    case 'show': imageSrc = IMAGE_SHOW; break;
+    case 'book': imageSrc = IMAGE_BOOK; break;
+    case 'author': imageSrc = IMAGE_AUTHOR; break;
+    case 'game': imageSrc = IMAGE_GAME; break;
+    case 'unknown' : imageSrc = IMAGE_UNKNOWN; break;
+    default: console.log(result.Type); break;
+  }
+  template.find(RESULTS_TYPE_IDENTIFIER).attr("src", imageSrc);
+  template.find(RESULTS_TYPE_IDENTIFIER).attr("alt", result.Type + ' image');
+
   return template;
 }
 
 function displayTasteDiveAPI(data) {
   console.log(data);
   var results;
-  results = data.Similar.Info.map(function(item, index) {
-    return renderResult(item);
-  });
+  results = data.Similar.Info.map(function(item, index) {return renderResult(item);});
   $(RESULTS_START_IDENTIFIER).html(results);
-
-  results = data.Similar.Results.map(function(item, index) {
-    return renderResult(item);
-  });
-  console.log(results);
-  $(RESULTS_IDENTIFIER).html(results);
-
+  results = data.Similar.Results.map(function(item, index) {return renderResult(item);});
+  $(RESULTS_LIST_IDENTIFIER).html(results);
   return(data);
 }
 
@@ -67,8 +96,23 @@ function watchSubmit() {
     var query = queryTarget.val();
     // clear out the input
     queryTarget.val("");
-    getDataFromApi(query, displayTasteDiveAPI);
+    getDataFromApi(query, displayTasteDiveAPI, $('input:radio[name=filter]:checked').val());
+  });
+}
+
+function watchItemClicked() {
+  $(RESULTS_IDENTIFIER).on('click', RESULT_CONTAINER_IDENTIFIER, function(event) {
+    $(this).toggleClass(MINIMIZE_IDENTIFIER);
+  });
+}
+
+function watchFilterButton() {
+  $(FILTER_BUTTON_IDENTIFIER).click(function(event) {
+    $(FILTER_LIST_IDENTIFIER).toggleClass(HIDDEN_IDENTIFIER);
+    $('input:radio[name=filter][value=any]').prop("checked",true);
   });
 }
 
 $(watchSubmit);
+$(watchItemClicked);
+$(watchFilterButton);
