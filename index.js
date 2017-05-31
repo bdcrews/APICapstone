@@ -15,8 +15,9 @@ var SEARCH_FORM_IDENTIFIER = '.js-search-form';
 var RESULT_CONTAINER_IDENTIFIER = '.js-result-container';
 var MINIMIZE_IDENTIFIER = 'js-minimize';
 var FILTER_BUTTON_IDENTIFIER = '.js_filter_button';
-var HIDDEN_IDENTIFIER = 'js-hidden';
 var FILTER_LIST_IDENTIFIER = '.js-filter-list';
+var DROPDOWN_BUTTON_IDENTIFIER = '.js_dropBtn';
+var SHOW_DROPDOWN_IDENTIFIER = 'js-show'
 
 var IMAGES_LOCATION = 'Images/';
 var IMAGE_MUSIC = IMAGES_LOCATION + 'music-player.png';
@@ -26,8 +27,6 @@ var IMAGE_BOOK = IMAGES_LOCATION + 'open-book.png';
 var IMAGE_AUTHOR = IMAGES_LOCATION + 'author-sign.png';
 var IMAGE_GAME = IMAGES_LOCATION + 'gamepad.png';
 var IMAGE_UNKNOWN = IMAGES_LOCATION + 'unknown.png';
-
-var RADIO_DEFAULT = 'radio-default';
 
 var RESULT_HTML_TEMPLATE = (
   '<div class="js-result-container js-minimize">' +
@@ -39,6 +38,10 @@ var RESULT_HTML_TEMPLATE = (
     '<p class="js-result-youtube-url"></p>' +
   '</div>'
 );
+
+var STATE = {
+  filter: 'none',
+};
 
 function getDataFromApi(searchTerm, callback, filterValue) {
   var query = {
@@ -96,7 +99,7 @@ function watchSubmit() {
     var query = queryTarget.val();
     // clear out the input
     queryTarget.val("");
-    getDataFromApi(query, displayTasteDiveAPI, $('input:radio[name=filter]:checked').val());
+    getDataFromApi(query, displayTasteDiveAPI, STATE.filter);
   });
 }
 
@@ -108,11 +111,19 @@ function watchItemClicked() {
 
 function watchFilterButton() {
   $(FILTER_BUTTON_IDENTIFIER).click(function(event) {
-    $(FILTER_LIST_IDENTIFIER).toggleClass(HIDDEN_IDENTIFIER);
-    $('input:radio[name=filter][value=any]').prop("checked",true);
+    $(FILTER_LIST_IDENTIFIER).toggleClass(SHOW_DROPDOWN_IDENTIFIER);
+  });
+}
+
+function watchFilterDropdown() {
+  $(FILTER_LIST_IDENTIFIER).click(function(event) {
+    STATE.filter = $(event.target).attr('value');
+    $(FILTER_BUTTON_IDENTIFIER).text(STATE.filter);
+    $(FILTER_LIST_IDENTIFIER).toggleClass(SHOW_DROPDOWN_IDENTIFIER);
   });
 }
 
 $(watchSubmit);
 $(watchItemClicked);
 $(watchFilterButton);
+$(watchFilterDropdown);

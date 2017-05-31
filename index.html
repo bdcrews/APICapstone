@@ -9,32 +9,35 @@
           integrity='sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4='
           crossorigin='anonymous'></script>
         <link href='index.css' rel='stylesheet' type='text/css' />
+        <link href="https://fonts.googleapis.com/css?family=Merienda+One|Roboto" rel="stylesheet">
     </head>
     <body>
       <main>
-        <h1>Sugestions Finder:</h1>
-          <form action="#'" class='js-search-form'>
-            <label for='query'>Music, Movie, Show, or Book:</label>
-            <input type='text' class='js-query' value='Matrix'>
-            <button type='submit'>Find Suggestions</button>
-            <button type='button' class='js_filter_button'>filter</button>
-
-             <div class='js-filter-list js-hidden'>
-               <input type='radio' name='filter' value='music'> music<br>
-               <input type='radio' name='filter' value='movies'> movie<br>
-               <input type='radio' name='filter' value='shows'> show<br>
-               <input type='radio' name='filter' value='books'> book<br>
-               <input type='radio' name='filter' value='authors'> author<br>
-               <input type='radio' name='filter' value='games'> game<br>
-               <input type='radio' name='filter' id='radio-default' value='any'> any
-             </div>
+        <h1>Sugestions Finder</h1>
+        <section>
+          <form action="#'" class='js-search-form left_align'>
+            <label for='query' class='left_align'>Music, Movie, Show, or Book:</label>
+            <input type='text' class='js-query left_align' value='Matrix'>
+            <button type='submit' class='button left_align'>Find Suggestions</button>
+            <div class="dropdown left_align">
+              <button type='button' class='js_filter_button button'>no filter</button>
+              <div id="myDropdown" class="js-filter-list dropdown-content">
+                <div class="js_dropBtn" value='music'>music</div>
+                <div class="js_dropBtn" value='movies'>movie</div>
+                <div class="js_dropBtn" value='shows'>show</div>
+                <div class="js_dropBtn" value='books'>book</div>
+                <div class="js_dropBtn" value='authors'>author</div>
+                <div class="js_dropBtn" value='games'>game</div>
+                <div class="js_dropBtn" value='none'>no filter</div>
+              </div>
+            </div>
           </form>
-          
-          <h2>Results</h2>
-          <section class='js-results'>
-            <div class='js-results-start'></div>
-            <div class='js-results-list'></div>
-          </section>
+        <section>
+
+        <section class='js-results left_align'>
+          <div class='js-results-start'></div>
+          <div class='js-results-list'></div>
+        </section>
       </main>
       <script src='index.js'></script>
     </body>
