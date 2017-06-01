@@ -8,8 +8,6 @@ var RESULTS_START_IDENTIFIER = '.js-results-start';
 var RESULTS_NAME_IDENTIFIER = '.js-result-name';
 var RESULTS_TEASER_IDENTIFIER = '.js-result-teaser';
 var RESULTS_TYPE_IDENTIFIER = '.js-result-type';
-var RESULTS_WIKI_URL_IDENTIFIER = '.js-result-wiki-url';
-var RESULTS_YOUTUBE_ID_IDENTIFIER = '.js-result-youtube-id';
 var RESULTS_YOUTUBE_URL_IDENTIFIER = '.js-result-youtube-url';
 var SEARCH_FORM_IDENTIFIER = '.js-search-form';
 var RESULT_CONTAINER_IDENTIFIER = '.js-result-container';
@@ -19,23 +17,15 @@ var FILTER_LIST_IDENTIFIER = '.js-filter-list';
 var DROPDOWN_BUTTON_IDENTIFIER = '.js_dropBtn';
 var SHOW_DROPDOWN_IDENTIFIER = 'js-show'
 
-var IMAGES_LOCATION = 'Images/';
-var IMAGE_MUSIC = IMAGES_LOCATION + 'music-player.png';
-var IMAGE_MOVIE = IMAGES_LOCATION + 'movie.png';
-var IMAGE_SHOW = IMAGES_LOCATION + 'television.png';
-var IMAGE_BOOK = IMAGES_LOCATION + 'open-book.png';
-var IMAGE_AUTHOR = IMAGES_LOCATION + 'author-sign.png';
-var IMAGE_GAME = IMAGES_LOCATION + 'gamepad.png';
-var IMAGE_UNKNOWN = IMAGES_LOCATION + 'unknown.png';
+//var IMAGES_LOCATION = 'Images/';
+//var IMAGE_WIKIPEDIA = IMAGES_LOCATION + 'wikipedia.png';
 
 var RESULT_HTML_TEMPLATE = (
   '<div class="js-result-container js-minimize">' +
+    '<div class="js-result-type material-icons md-48 icon"></div>' +
     '<h3 class="js-result-name"></h3>' +
-    '<img class="js-result-type">' +
-    '<p class="js-result-teaser"></p>' +
-    '<p class="js-result-wiki-url"></p>' +
-    '<p class="js-result-youtube-id"></p>' +
-    '<p class="js-result-youtube-url"></p>' +
+    '<iframe class="js-result-youtube-url youtube-video" allowFullScreen></iframe>' + 
+    '<p class="js-result-teaser"><a class="js-result-wiki wiki_link"></a></p>' +
   '</div>'
 );
 
@@ -58,26 +48,34 @@ function getDataFromApi(searchTerm, callback, filterValue) {
 
 function renderResult(result) {
   var template = $(RESULT_HTML_TEMPLATE);
-  template.find(RESULTS_NAME_IDENTIFIER).text(result.Name);
-  template.find(RESULTS_TEASER_IDENTIFIER).text(result.wTeaser);
-  template.find(RESULTS_TYPE_IDENTIFIER).text(result.Type);
-  template.find(RESULTS_WIKI_URL_IDENTIFIER).text(result.wUrl);
-  template.find(RESULTS_YOUTUBE_ID_IDENTIFIER).text(result.yID);
-  template.find(RESULTS_YOUTUBE_URL_IDENTIFIER).text(result.yUrl);
 
-  var imageSrc;
-  switch(result.Type){
-    case 'music': imageSrc = IMAGE_MUSIC; break;
-    case 'movie': imageSrc = IMAGE_MOVIE; break;
-    case 'show': imageSrc = IMAGE_SHOW; break;
-    case 'book': imageSrc = IMAGE_BOOK; break;
-    case 'author': imageSrc = IMAGE_AUTHOR; break;
-    case 'game': imageSrc = IMAGE_GAME; break;
-    case 'unknown' : imageSrc = IMAGE_UNKNOWN; break;
-    default: console.log(result.Type); break;
+  if(result.Type !== 'unknown')
+  {
+    template.find(RESULTS_NAME_IDENTIFIER).text(result.Name);
+    template.find(RESULTS_TEASER_IDENTIFIER).text(result.wTeaser);
+    template.find(RESULTS_TYPE_IDENTIFIER).text(result.Type);
+    template.find(RESULTS_TEASER_IDENTIFIER).append('<a href="' + result.wUrl + '">[more] </a>');
+    var strYouTubeStr = 'https://www.youtube.com/embed/' + result.yID;
+    template.find(RESULTS_YOUTUBE_URL_IDENTIFIER).attr('src',strYouTubeStr);
   }
-  template.find(RESULTS_TYPE_IDENTIFIER).attr("src", imageSrc);
-  template.find(RESULTS_TYPE_IDENTIFIER).attr("alt", result.Type + ' image');
+  else
+  {
+    template.find(RESULTS_NAME_IDENTIFIER).text("No suggestions found.  Try again.");
+    template.find(RESULTS_YOUTUBE_URL_IDENTIFIER).hide();
+  }
+
+  var icon;
+   switch(result.Type){
+     case 'music': icon = 'music_note'; break;
+     case 'movie': icon = 'local_movies'; break;
+     case 'show': icon = 'tv'; break;
+     case 'book': icon = 'book'; break;
+     case 'author': icon = 'person'; break;
+     case 'game': icon = 'videogame_asset'; break;
+     case 'unknown' : icon = 'error_outline'; break;
+   }
+
+  template.find(RESULTS_TYPE_IDENTIFIER).text(icon);
 
   return template;
 }
@@ -119,7 +117,7 @@ function watchFilterDropdown() {
   $(FILTER_LIST_IDENTIFIER).click(function(event) {
     STATE.filter = $(event.target).attr('value');
     $(FILTER_BUTTON_IDENTIFIER).text(STATE.filter);
-    $(FILTER_LIST_IDENTIFIER).toggleClass(SHOW_DROPDOWN_IDENTIFIER);
+    $(FILTER_LIST_IDENTIFIER).removeClass(SHOW_DROPDOWN_IDENTIFIER);
   });
 }
 

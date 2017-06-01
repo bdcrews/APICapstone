@@ -9,26 +9,28 @@
           integrity='sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4='
           crossorigin='anonymous'></script>
         <link href='index.css' rel='stylesheet' type='text/css' />
-        <link href="https://fonts.googleapis.com/css?family=Merienda+One|Roboto" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Oswald:500|Roboto|Material+Icons" rel="stylesheet">
     </head>
     <body>
       <main>
-        <h1>Sugestions Finder</h1>
+        <header>
+          <h1>Find Similar</h1>
+        </header>
         <section>
           <form action="#'" class='js-search-form left_align'>
-            <label for='query' class='left_align'>Music, Movie, Show, or Book:</label>
-            <input type='text' class='js-query left_align' value='Matrix'>
-            <button type='submit' class='button left_align'>Find Suggestions</button>
+            <input type='text' class='js-query left_align' required>
+            <span class="floating-label">music, movie, show, book author, or game</span>
+            <button type='submit' class='button left_align'>Search</button>
             <div class="dropdown left_align">
-              <button type='button' class='js_filter_button button'>no filter</button>
+              <button type='button' class='js_filter_button button'>any</button>
               <div id="myDropdown" class="js-filter-list dropdown-content">
-                <div class="js_dropBtn" value='music'>music</div>
-                <div class="js_dropBtn" value='movies'>movie</div>
-                <div class="js_dropBtn" value='shows'>show</div>
-                <div class="js_dropBtn" value='books'>book</div>
-                <div class="js_dropBtn" value='authors'>author</div>
-                <div class="js_dropBtn" value='games'>game</div>
-                <div class="js_dropBtn" value='none'>no filter</div>
+                <button type='button' class="js_dropBtn button" value='music'>music</button>
+                <button type='button' class="js_dropBtn button" value='movies'>movie</button>
+                <button type='button' class="js_dropBtn button" value='shows'>show</button>
+                <button type='button' class="js_dropBtn button" value='books'>book</button>
+                <button type='button' class="js_dropBtn button" value='authors'>author</button>
+                <button type='button' class="js_dropBtn button" value='games'>game</button>
+                <button type='button' class="js_dropBtn button" value='any'>any</button>
               </div>
             </div>
           </form>
