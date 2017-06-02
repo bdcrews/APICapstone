@@ -17,9 +17,6 @@ var FILTER_LIST_IDENTIFIER = '.js-filter-list';
 var DROPDOWN_BUTTON_IDENTIFIER = '.js_dropBtn';
 var SHOW_DROPDOWN_IDENTIFIER = 'js-show'
 
-//var IMAGES_LOCATION = 'Images/';
-//var IMAGE_WIKIPEDIA = IMAGES_LOCATION + 'wikipedia.png';
-
 var RESULT_HTML_TEMPLATE = (
   '<div class="js-result-container js-minimize">' +
     '<div class="js-result-type material-icons md-48 icon"></div>' +
@@ -38,11 +35,9 @@ function getDataFromApi(searchTerm, callback, filterValue) {
     q: searchTerm,
     type: filterValue,
     info: 1,
-    limit: 5,
+    limit: 20,
     k: '271092-BrandonC-L99WRBFW',
-    //callback: callback,
   };
-  console.log(query);
   $.getJSON(TASTEDIVE_URL, query, callback);
 }
 
@@ -54,7 +49,7 @@ function renderResult(result) {
     template.find(RESULTS_NAME_IDENTIFIER).text(result.Name);
     template.find(RESULTS_TEASER_IDENTIFIER).text(result.wTeaser);
     template.find(RESULTS_TYPE_IDENTIFIER).text(result.Type);
-    template.find(RESULTS_TEASER_IDENTIFIER).append('<a href="' + result.wUrl + '">[more] </a>');
+    template.find(RESULTS_TEASER_IDENTIFIER).append('<a target="_blank" href="' + result.wUrl + '">[more] </a>');
     var strYouTubeStr = 'https://www.youtube.com/embed/' + result.yID;
     template.find(RESULTS_YOUTUBE_URL_IDENTIFIER).attr('src',strYouTubeStr);
   }
@@ -74,14 +69,12 @@ function renderResult(result) {
      case 'game': icon = 'videogame_asset'; break;
      case 'unknown' : icon = 'error_outline'; break;
    }
-
   template.find(RESULTS_TYPE_IDENTIFIER).text(icon);
 
   return template;
 }
 
 function displayTasteDiveAPI(data) {
-  console.log(data);
   var results;
   results = data.Similar.Info.map(function(item, index) {return renderResult(item);});
   $(RESULTS_START_IDENTIFIER).html(results);
@@ -95,8 +88,7 @@ function watchSubmit() {
     event.preventDefault();
     var queryTarget = $(event.currentTarget).find('.js-query');
     var query = queryTarget.val();
-    // clear out the input
-    queryTarget.val("");
+    queryTarget.val(""); // clear out the input
     getDataFromApi(query, displayTasteDiveAPI, STATE.filter);
   });
 }

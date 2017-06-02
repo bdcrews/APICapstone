@@ -1,5 +1,5 @@
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 /*
@@ -12,10 +12,10 @@ orange: #ff9000
 */
 
 body {
-  font-family: 'Roboto', sans-serif;
-  background-color: #263248;
-  margin:0 auto;
-  max-width: 800px;
+	font-family: 'Roboto', sans-serif;
+	background-color: #263248;
+	margin:0 auto;
+	max-width: 800px;
 
 }
 
@@ -26,7 +26,7 @@ h1 {
 	color: #ff9000;
 	text-align: center;
 	text-shadow: 1px 1px 3px #000000, 0 0 2em #7e8aa2, 0 0 1em #7e8aa2, 0 0 0.2em #7e8aa2;
-  	padding: 20px 20px 20px 20px;
+	padding: 20px 20px 20px 20px;
 }
 
 h3 {
@@ -46,9 +46,9 @@ h3 {
 	width: 100%;
 	border: 1px solid black;
 	border-radius: 4px;
-  	background-color: #7e8aa2;
-  	color: #000000;
-    transition: 1.2s ease all;
+	background-color: #7e8aa2;
+	color: #000000;
+	transition: 1.2s ease all;
 }
 
 .js-result-container p {
@@ -58,7 +58,7 @@ h3 {
 .js-minimize {
 	height: 80px;
 	overflow: hidden;
-    transition: 0.2s ease all;
+	transition: 0.2s ease all;
 }
 
 .js-search-form{
@@ -71,12 +71,12 @@ h3 {
 	outline-style:none;
 	height: 45px;
 	min-width: 120px;
-	background-color:  #7e8aa2;
-    border: 1px solid #263248;
-    cursor: pointer;
-    color: black;
+	background-color: #7e8aa2;
+	border: 1px solid #263248;
+	cursor: pointer;
+	color: black;
 	font-size: 24px;
-    transition: 0.2s ease all;
+	transition: 0.2s ease all;
 }
 
 .js-results{
@@ -107,30 +107,30 @@ input:not(:focus):valid ~ .floating-label{
 }
 
 .floating-label {
-  position: absolute;
-  pointer-events: none;
-  left: 10px;
-  top: 15px;
-  transition: 0.2s ease all;
-  color: #7e8aa2;
+	position: absolute;
+	pointer-events: none;
+	left: 10px;
+	top: 15px;
+	transition: 0.2s ease all;
+	color: #7e8aa2;
 }
 .button:hover {
-	background-color:  #ff9000;
+	background-color: #ff9000;
 }
 
 .button:active {
-	background-color:  #263248;
-  	color: #7e8aa2;
+	background-color: #263248;
+	color: #7e8aa2;
 }
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #7e8aa2;
-    width: 120px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+	display: none;
+	position: absolute;
+	background-color: #7e8aa2;
+	width: 120px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
 }
 .dropdown-content button { text-align: left; }
 .dropdown { overflow: hidden; }
